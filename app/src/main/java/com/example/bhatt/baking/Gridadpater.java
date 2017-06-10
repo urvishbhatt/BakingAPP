@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
-
 /**
  * Created by bhatt on 05-06-2017.
  */
@@ -28,7 +27,7 @@ public class Gridadpater extends RecyclerView.Adapter<Gridadpater.MyViewHolder> 
     ArrayList<GridData> arraylist = new ArrayList<>();
     Context context;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder  {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView imageView;
         public TextView nama,ingredian,steps;
@@ -39,15 +38,23 @@ public class Gridadpater extends RecyclerView.Adapter<Gridadpater.MyViewHolder> 
             nama = (TextView)itemView.findViewById(R.id.dishname);
             ingredian = (TextView)itemView.findViewById(R.id.ingrediantext);
             steps = (TextView)itemView.findViewById(R.id.stepstext);
+
+            itemView.setOnClickListener(this);
         }
 
-
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPosition);
+        }
     }
 
-    public Gridadpater(Context context, ArrayList<GridData> arraylist) {
+    Gridadpater(Context context, ArrayList<GridData> arraylist, ListItemClickListener listener) {
         this.context = context;
         this.arraylist = arraylist;
+        mOnClickListener = listener;
     }
+
     @Override
     public Gridadpater.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -56,6 +63,7 @@ public class Gridadpater extends RecyclerView.Adapter<Gridadpater.MyViewHolder> 
 
         return new MyViewHolder(itemView);
     }
+
     @Override
     public void onBindViewHolder(Gridadpater.MyViewHolder holder, int position) {
         GridData gridData = arraylist.get(position);
@@ -65,22 +73,15 @@ public class Gridadpater extends RecyclerView.Adapter<Gridadpater.MyViewHolder> 
         holder.steps.setText(String.valueOf(gridData.getdishsteps()));
         holder.imageView.setImageResource(gridData.getimage());
 
-
-
-        final int post = position;
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,String.valueOf(post),Toast.LENGTH_SHORT).show();
-            }
-        });
     }
+
     @Override
     public int getItemCount() {
         return arraylist.size();
     }
 
+    interface ListItemClickListener { void onListItemClick(int clickedItemIndex); }
 
+    final private ListItemClickListener mOnClickListener;
 
 }

@@ -1,5 +1,6 @@
 package com.example.bhatt.baking;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,7 +26,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Gridadpater.ListItemClickListener {
 
     @BindView(R.id.RecyclerView) RecyclerView recyclerView;
 
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     int Dishsteps;
 
     ArrayList<GridData> arraylist = new ArrayList<>();
+
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
+        intent = new Intent(MainActivity.this,MainActivity2.class);
     }
+
     private void getinputStream(){
         inputStream = getResources().openRawResource(R.raw.bakingappjson);
         try {
@@ -119,14 +123,19 @@ public class MainActivity extends AppCompatActivity {
     }
     public void UpdateUI(){
 
-//        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
-
-        Gridadpater adapter = new Gridadpater(MainActivity.this,arraylist);
+        Gridadpater adapter = new Gridadpater(MainActivity.this,arraylist,MainActivity.this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+
+        intent.putExtra("ID",clickedItemIndex);
+        startActivity(intent);
     }
 }
