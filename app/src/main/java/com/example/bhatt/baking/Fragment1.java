@@ -52,27 +52,6 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
 
-        if(savedInstanceState == null){
-            fragment1 = inflater.inflate(R.layout.fragment1,container,false);
-
-            recyclerView1 = (RecyclerView)fragment1.findViewById(R.id.ingredianList);
-            recyclerView2 = (RecyclerView)fragment1.findViewById(R.id.stepsList);
-
-            Activity activity = getActivity();
-
-            ID = activity.getIntent().getIntExtra("ID",1);
-
-            getinputStream();
-            try {
-                getjsondata();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-
-
         fragment1 = inflater.inflate(R.layout.fragment1,container,false);
 
         recyclerView1 = (RecyclerView)fragment1.findViewById(R.id.ingredianList);
@@ -90,8 +69,6 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
         }
 
         return fragment1;
-
-
     }
 
     private void getinputStream(){
@@ -250,5 +227,9 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+    }
 }

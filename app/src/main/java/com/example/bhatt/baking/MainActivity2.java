@@ -36,7 +36,7 @@ public class MainActivity2 extends AppCompatActivity  {
 
 
     Fragment1 fragment1;
-    Fragment2 fragment2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +57,15 @@ public class MainActivity2 extends AppCompatActivity  {
 
         }else {
             Log.e("savedInstanceState","savedInstanceState2");
+
             fragment1 = (Fragment1)this.getFragmentManager().findFragmentByTag("fragment1");
+
             if (fragment1 != null){
                 fragment1 = new Fragment1();
                 fragment1.setArguments(getIntent().getExtras());
                 getFragmentManager().beginTransaction().add(R.id.fragment1,fragment1,"fragment1").commit();
             }
         }
-
-
-
     }
 
 
