@@ -217,7 +217,7 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
         Fragment2 Fragment = (Fragment2) getFragmentManager().findFragmentById(R.id.fragment2);
 
 
-        if(Fragment != null){
+        if(MainActivity2.issecondfragment){
             Fragment.update(description,videourl);
         }else {
             Intent intent = new Intent(activity,MainActivity3.class);

@@ -37,6 +37,7 @@ public class MainActivity2 extends AppCompatActivity  {
 
     Fragment1 fragment1;
 
+    static boolean issecondfragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,27 +48,23 @@ public class MainActivity2 extends AppCompatActivity  {
         actionBar.setElevation(0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if(savedInstanceState == null){
-
-            Log.e("savedInstanceState","savedInstanceState1");
-
-            fragment1 = new Fragment1();
-            fragment1.setArguments(getIntent().getExtras());
-            getFragmentManager().beginTransaction().add(R.id.fragment1,fragment1,"fragment1").commit();
-
+        if(findViewById(R.id.fragment2)!= null){
+            Log.e("fragment2","fragment2.1");
+            issecondfragment = true;
         }else {
-            Log.e("savedInstanceState","savedInstanceState2");
 
-            fragment1 = (Fragment1)this.getFragmentManager().findFragmentByTag("fragment1");
+            Log.e("fragment2","fragment2.2");
+            issecondfragment = false;
+            if(savedInstanceState == null){
 
-            if (fragment1 != null){
                 fragment1 = new Fragment1();
                 fragment1.setArguments(getIntent().getExtras());
-                getFragmentManager().beginTransaction().add(R.id.fragment1,fragment1,"fragment1").commit();
+                getFragmentManager().beginTransaction().add(R.id.fragment1,fragment1).commit();
+
             }
         }
+
+
+
     }
-
-
-
 }
