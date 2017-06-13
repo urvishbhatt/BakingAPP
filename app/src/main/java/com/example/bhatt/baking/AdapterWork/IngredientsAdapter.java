@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bhatt.baking.Fragment1;
 import com.example.bhatt.baking.GridData;
 import com.example.bhatt.baking.Gridadpater;
 import com.example.bhatt.baking.MainActivity2;
@@ -45,8 +46,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         }
     }
 
-        public IngredientsAdapter(MainActivity2 mainActivity2, ArrayList<IngredientsDATA> ArrayList){
-            context = mainActivity2;
+        public IngredientsAdapter(ArrayList<IngredientsDATA> ArrayList){
             arraylist = ArrayList;
         }
 

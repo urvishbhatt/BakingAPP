@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.bhatt.baking.MainActivity2">
+    
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/ingredianListText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:text="Ingredian"
+                android:gravity="center"
+                android:textSize="16sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/ingredianList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ingredianListText"
+                android:layout_marginBottom="25dp">
+            </android.support.v7.widget.RecyclerView>
+
+
+            <TextView
+                android:id="@+id/stepsListText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ingredianList"
+                android:background="@color/colorAccent"
+                android:text="steps"
+                android:gravity="center"
+                android:textSize="16sp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/stepsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/stepsListText"
+                android:layout_marginBottom="25dp">
+            </android.support.v7.widget.RecyclerView>
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
+
+
+
+</LinearLayout >
