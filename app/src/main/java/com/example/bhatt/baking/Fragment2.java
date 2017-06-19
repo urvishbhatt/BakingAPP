@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -56,6 +57,7 @@ public class Fragment2 extends Fragment {
 
     View fragment2;
 
+    long time = 0;
 
 
     @Nullable
@@ -69,16 +71,31 @@ public class Fragment2 extends Fragment {
         bandwidthMeter = new DefaultBandwidthMeter();
         mediaDataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
 
-        textView = (TextView)fragment2.findViewById(R.id.exo_player_description);
+        Toast.makeText(getActivity(),"Work",Toast.LENGTH_SHORT).show();
 
 
         return fragment2;
 
     }
 
-    private void initializePlayer(String description,String videolink) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
+        if (savedInstanceState != null){
 
+            description = savedInstanceState.getString("description");
+            videolink = savedInstanceState.getString("videolink");
+            time = savedInstanceState.getLong("time");
+
+            update(description,videolink,time);
+        }
+
+    }
+
+    private void initializePlayer(String description, String videolink,long time) {
+
+        textView = (TextView)fragment2.findViewById(R.id.exo_player_description);
         textView.setText(description);
 
         simpleExoPlayerView = (SimpleExoPlayerView)fragment2.findViewById(R.id.exo_player);
@@ -108,6 +125,7 @@ public class Fragment2 extends Fragment {
 
             player.prepare(mediaSource);
             player.setPlayWhenReady(shouldAutoPlay);
+            player.seekTo(time);
         }
 
 
@@ -127,19 +145,31 @@ public class Fragment2 extends Fragment {
         player = null;
     }
 
-    public void update(String description,String videolink){
+    public void update(String description,String videolink,long time){
         this.description = description;
-        this.description = videolink;
+        this.videolink = videolink;
 
         if(player != null){
             relesePlayer();
-            initializePlayer(description,videolink);
+            initializePlayer(description,videolink,time);
 
         }else {
-            initializePlayer(description,videolink);
+            initializePlayer(description,videolink,time);
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(simpleExoPlayerView.getVisibility() == View.VISIBLE){
+            time = player.getCurrentPosition();
         }
 
 
-
+        outState.putString("description",description);
+        outState.putString("videolink",videolink);
+        outState.putLong("time",time);
     }
 }

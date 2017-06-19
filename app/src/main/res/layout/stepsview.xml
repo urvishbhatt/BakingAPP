@@ -1,18 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/stepsdiscription"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recipe Introduction"
-        android:paddingBottom="6dp"
-        android:paddingTop="6dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:paddingLeft="10dp"
         android:textSize="16sp"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/documentimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/document"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:foregroundGravity="center_vertical"
+        android:layout_centerVertical="true"/>
+
+    <ImageView
+        android:id="@+id/stepvideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/video"
+        android:layout_marginEnd="9dp"
+        android:foregroundGravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/documentimage" />
+
+
+</RelativeLayout>

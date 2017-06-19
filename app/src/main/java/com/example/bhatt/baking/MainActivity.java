@@ -1,12 +1,15 @@
 package com.example.bhatt.baking;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -121,14 +124,37 @@ public class MainActivity extends AppCompatActivity implements Gridadpater.ListI
 
         UpdateUI();
     }
+
+
     public void UpdateUI(){
 
         Gridadpater adapter = new Gridadpater(MainActivity.this,arraylist,MainActivity.this);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        double inch;
 
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        inch = screensize();
+
+        if(inch<=6.0){
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+            }
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                int mNoOfColumns = calculateNoOfColumns();
+//                recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,mNoOfColumns));
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this,mNoOfColumns);
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+            }
+        }else {
+            int mNoOfColumns = calculateNoOfColumns();
+//            recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,mNoOfColumns));
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this,mNoOfColumns);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
+
         recyclerView.setAdapter(adapter);
     }
 
@@ -137,5 +163,46 @@ public class MainActivity extends AppCompatActivity implements Gridadpater.ListI
 
         intent.putExtra("ID",clickedItemIndex);
         startActivity(intent);
+    }
+
+    public  int calculateNoOfColumns() {
+
+        float dpWidth =  0.0f;
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            dpWidth = displayMetrics.heightPixels / displayMetrics.density;
+        }
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        }
+
+        double size;
+
+        size = screensize();
+        int noOfColumns;
+
+        if(size<=6.0){
+            noOfColumns = (int) (dpWidth / 150);
+        }else {
+            noOfColumns = (int) (dpWidth / 300);
+        }
+
+        return noOfColumns;
+    }
+    public double screensize() {
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        double wi=(double)width/(double)dm.xdpi;
+        double hi=(double)height/(double)dm.ydpi;
+        double x = Math.pow(wi,2);
+        double y = Math.pow(hi,2);
+        double screenInches = Math.sqrt(x+y);
+
+        return screenInches;
     }
 }

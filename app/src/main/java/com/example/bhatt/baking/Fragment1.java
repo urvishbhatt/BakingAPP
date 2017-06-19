@@ -47,6 +47,9 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
     View fragment1;
 
+    String description;
+    String videourl;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
         Activity activity = getActivity();
 
+
         ID = activity.getIntent().getIntExtra("ID",1);
 
         getinputStream();
@@ -70,6 +74,7 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
         return fragment1;
     }
+
 
     private void getinputStream(){
         inputStream = getResources().openRawResource(R.raw.bakingappjson);
@@ -157,9 +162,6 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
                 }
                 list1.add(new IngredientsDATA(quantity,measure,ingredient,image));
             }
-
-
-
         }
 
 
@@ -207,8 +209,8 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
         IngredientsDATA ingredientsDATA = list2.get(clickedItemIndex);
 
-        String description = ingredientsDATA.getdescription();
-        String videourl = ingredientsDATA.getvideoURL();
+        description = ingredientsDATA.getdescription();
+        videourl = ingredientsDATA.getvideoURL();
 
         Activity activity = getActivity();
 
@@ -218,18 +220,12 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
 
         if(MainActivity2.issecondfragment){
-            Fragment.update(description,videourl);
+            Fragment.update(description,videourl,0);
         }else {
             Intent intent = new Intent(activity,MainActivity3.class);
             intent.putExtra("description",description);
             intent.putExtra("videourl",videourl);
             startActivity(intent);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
     }
 }

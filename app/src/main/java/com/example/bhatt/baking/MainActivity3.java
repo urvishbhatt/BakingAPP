@@ -45,11 +45,11 @@ public class MainActivity3 extends AppCompatActivity {
     private BandwidthMeter bandwidthMeter;
     private DefaultExtractorsFactory extractorsFactory;
 
+    private long time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         shouldAutoPlay = true;
         bandwidthMeter = new DefaultBandwidthMeter();
@@ -67,11 +67,18 @@ public class MainActivity3 extends AppCompatActivity {
 
         videolink = getIntent().getStringExtra("videourl");
 
-        initializePlayer(videolink);
+        if (savedInstanceState != null){
+            time = savedInstanceState.getLong("time");
+            initializePlayer(videolink,time);
+
+        }else {
+            time = 0;
+            initializePlayer(videolink,time);
+        }
     }
 
 
-    private void initializePlayer(String videolink) {
+    private void initializePlayer(String videolink,long time) {
 
         simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exo_player);
         simpleExoPlayerView.requestFocus();
@@ -98,9 +105,8 @@ public class MainActivity3 extends AppCompatActivity {
 
             player.prepare(mediaSource);
             player.setPlayWhenReady(shouldAutoPlay);
+            player.seekTo(time);
         }
-
-
     }
 
     @Override
@@ -116,4 +122,9 @@ public class MainActivity3 extends AppCompatActivity {
         player = null;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("time",player.getCurrentPosition());
+    }
 }

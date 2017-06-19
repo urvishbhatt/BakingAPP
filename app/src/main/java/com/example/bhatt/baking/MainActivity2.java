@@ -51,20 +51,17 @@ public class MainActivity2 extends AppCompatActivity  {
         if(findViewById(R.id.fragment2)!= null){
             Log.e("fragment2","fragment2.1");
             issecondfragment = true;
-        }else {
+        }
 
+        else {
             Log.e("fragment2","fragment2.2");
             issecondfragment = false;
             if(savedInstanceState == null){
-
                 fragment1 = new Fragment1();
                 fragment1.setArguments(getIntent().getExtras());
                 getFragmentManager().beginTransaction().add(R.id.fragment1,fragment1).commit();
 
             }
         }
-
-
-
     }
 }

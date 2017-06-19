@@ -3,6 +3,7 @@ package com.example.bhatt.baking.AdapterWork;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,17 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView stepsdiscription;
+        ImageView videoimage;
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
             stepsdiscription = (TextView)itemView.findViewById(R.id.stepsdiscription);
+
+            if(itemView.findViewById(R.id.stepvideo) != null){
+                videoimage = (ImageView)itemView.findViewById(R.id.stepvideo);
+            }
+
 
             itemView.setOnClickListener(this);
         }
@@ -64,6 +71,20 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.MyViewHolder
             IngredientsDATA ingredientsDATA = arrayList.get(position);
 
             holder.stepsdiscription.setText(ingredientsDATA.getshortDescription());
+
+
+            if (holder.videoimage != null){
+
+                Log.e("notwork","notwork");
+
+                if((ingredientsDATA.getvideoURL()).isEmpty()){
+                    holder.videoimage.setVisibility(View.INVISIBLE);
+                }else {
+                    holder.videoimage.setVisibility(View.VISIBLE);
+                }
+            }
+
+
         }
 
         @Override
