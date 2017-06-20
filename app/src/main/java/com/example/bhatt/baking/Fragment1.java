@@ -171,6 +171,7 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
                 }
                 list1.add(new IngredientsDATA(quantity,measure,ingredient,image));
+
             }
         }
 
