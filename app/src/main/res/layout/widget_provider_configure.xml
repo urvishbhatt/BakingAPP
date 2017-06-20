@@ -16,28 +16,28 @@
             android:id="@+id/radioButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nutella Pie"
+            android:text="@string/NutellaPie"
             android:layout_marginBottom="5dp"/>
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Brownies"
+            android:text="@string/Brownies"
             android:layout_marginBottom="5dp"/>
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Yellow Cake"
+            android:text="@string/YellowCake"
             android:layout_marginBottom="5dp"/>
 
         <RadioButton
             android:id="@+id/radioButton4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cheesecake"
+            android:text="@string/Cheesecake"
             android:layout_marginBottom="5dp"/>
 
     </RadioGroup>

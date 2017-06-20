@@ -4,4 +4,13 @@
     <string name="configure">Configure</string>
     <string name="add_widget">show me ingredients</string>
     <string name="Error">Error</string>
+
+    <string name="Ingredian">Ingredian</string>
+    <string name="Steps">Steps</string>
+
+    <string name="NutellaPie">Nutella Pie</string>
+    <string name="Brownies">Brownies</string>
+    <string name="YellowCake">Yellow Cake</string>
+    <string name="Cheesecake">Cheesecake</string>
+
 </resources>
