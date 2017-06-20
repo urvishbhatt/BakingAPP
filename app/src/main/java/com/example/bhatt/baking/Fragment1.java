@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 
 /**
  * Created by bhatt on 12-06-2017.
@@ -35,6 +37,12 @@ import java.util.ArrayList;
 
 public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickListener{
 
+
+    /****************************************/
+    // app crash when use @BindView for fragment
+//    @BindView(R.id.ingredianList) RecyclerView recyclerView1;
+//    @BindView(R.id.stepsList) RecyclerView recyclerView2;
+    /*******************************************/
 
     RecyclerView recyclerView1 , recyclerView2;
     ArrayList<IngredientsDATA> list1 = new ArrayList<>();
@@ -56,6 +64,8 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
 
         fragment1 = inflater.inflate(R.layout.fragment1,container,false);
+
+
 
         recyclerView1 = (RecyclerView)fragment1.findViewById(R.id.ingredianList);
         recyclerView2 = (RecyclerView)fragment1.findViewById(R.id.stepsList);
@@ -186,10 +196,12 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
     }
     public void UpdateUI(){
 
-        IngredientsAdapter adapter = new IngredientsAdapter(list1);
+        Activity activity = getActivity();
+
+        IngredientsAdapter adapter = new IngredientsAdapter(activity,list1);
         StepsAdapter adapter1 = new StepsAdapter(list2,this);
 
-        Activity activity = getActivity();
+
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(activity);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

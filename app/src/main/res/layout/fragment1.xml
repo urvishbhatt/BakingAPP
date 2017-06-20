@@ -8,10 +8,12 @@
     android:background="#FFDDDDDD">
     
     <ScrollView
+        android:id="@+id/framescrollview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/fragment1relativelayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
@@ -52,15 +54,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/stepsListText"
-                android:layout_marginBottom="25dp">
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="10dp">
             </android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
-
-
-
     </ScrollView>
-
-
-
 </LinearLayout >

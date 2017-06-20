@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.w3c.dom.Text;
 
 import java.net.ConnectException;
@@ -71,7 +74,13 @@ public class Gridadpater extends RecyclerView.Adapter<Gridadpater.MyViewHolder> 
         holder.nama.setText(gridData.getdishname());
         holder.ingredian.setText(String.valueOf(gridData.getdishTotalingredients()));
         holder.steps.setText(String.valueOf(gridData.getdishsteps()));
-        holder.imageView.setImageResource(gridData.getimage());
+
+        Glide.with(context)
+                .load(gridData.getimage())
+                .thumbnail(0.5f)
+                .into(holder.imageView);
+
+//        holder.imageView.setImageResource(gridData.getimage());
 
     }
 

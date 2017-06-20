@@ -1,5 +1,6 @@
 package com.example.bhatt.baking.AdapterWork;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.bhatt.baking.Fragment1;
 import com.example.bhatt.baking.GridData;
 import com.example.bhatt.baking.Gridadpater;
+import com.example.bhatt.baking.MainActivity;
 import com.example.bhatt.baking.MainActivity2;
 import com.example.bhatt.baking.R;
 
@@ -46,7 +50,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         }
     }
 
-        public IngredientsAdapter(ArrayList<IngredientsDATA> ArrayList){
+        public IngredientsAdapter(Activity activity, ArrayList<IngredientsDATA> ArrayList){
+            context = activity;
             arraylist = ArrayList;
         }
 
@@ -66,7 +71,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
             IngredientsDATA ingredientsDATA = arraylist.get(position);
 
             holder.ingredienttext.setText(ingredientsDATA.getingredient());
-            holder.ingredientsimage.setImageResource(ingredientsDATA.getimage());
+
+            Glide.with(context)
+                    .load(ingredientsDATA.getimage())
+                    .thumbnail(0.5f)
+                    .into(holder.ingredientsimage);
+
             holder.quantityandmeasure.setText(ingredientsDATA.getquantitymeasure());
 
         }
