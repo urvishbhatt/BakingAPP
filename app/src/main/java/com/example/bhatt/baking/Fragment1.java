@@ -151,22 +151,22 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
                 switch (measure){
 
-                    case "CUP" : image = R.drawable.cup;
+                    case "CUP" : image = R.drawable.cupimage;
                         break;
 
-                    case "TBLSP" : image = R.drawable.tblsp;
+                    case "TBLSP" : image = R.drawable.tblspimage;
                         break;
 
-                    case "K" : image = R.drawable.k;
+                    case "K" : image = R.drawable.kimage;
                         break;
 
-                    case "G" : image = R.drawable.g;
+                    case "G" : image = R.drawable.gimage;
                         break;
 
-                    case "OZ" : image = R.drawable.oz;
+                    case "OZ" : image = R.drawable.ozimage;
                         break;
 
-                    case "UNIT" : image = R.drawable.unit;
+                    case "UNIT" : image = R.drawable.unitimage;
                         break;
 
                 }
