@@ -65,8 +65,6 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
         fragment1 = inflater.inflate(R.layout.fragment1,container,false);
 
-
-
         recyclerView1 = (RecyclerView)fragment1.findViewById(R.id.ingredianList);
         recyclerView2 = (RecyclerView)fragment1.findViewById(R.id.stepsList);
 
@@ -74,6 +72,10 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
 
 
         ID = activity.getIntent().getIntExtra("ID",1);
+
+        if (savedInstanceState == null){
+            JSON = activity.getIntent().getStringExtra("JSON");
+        }
 
         getinputStream();
         try {
@@ -240,5 +242,10 @@ public class Fragment1 extends Fragment implements StepsAdapter.ListItemClickLis
             intent.putExtra("videourl",videourl);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("JSON",JSON);
     }
 }

@@ -38,8 +38,6 @@ public class Fragment2 extends Fragment {
     private String description;
     private String videolink;
 
-//    @BindView(R.id.exo_player_description) TextView textView;
-
     private TextView textView;
 
 
@@ -132,11 +130,12 @@ public class Fragment2 extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onPause() {
+        super.onPause();
         if(player != null){
             relesePlayer();
         }
+
     }
 
     private void relesePlayer(){
@@ -166,7 +165,6 @@ public class Fragment2 extends Fragment {
         if(simpleExoPlayerView.getVisibility() == View.VISIBLE){
             time = player.getCurrentPosition();
         }
-
 
         outState.putString("description",description);
         outState.putString("videolink",videolink);

@@ -2,6 +2,7 @@ package com.example.bhatt.baking;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,6 +23,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import butterknife.BindDrawable;
@@ -31,12 +36,11 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements Gridadpater.ListItemClickListener {
 
-    @BindView(R.id.RecyclerView) RecyclerView recyclerView;
 
-    InputStream inputStream;
+    RecyclerView recyclerView;
+
     String JSON;
 
-    int DishID;
     String DishName;
     int DishTotalingredients;
     int Dishsteps;
@@ -45,30 +49,116 @@ public class MainActivity extends AppCompatActivity implements Gridadpater.ListI
 
     Intent intent;
 
+    final public static String DISCOVERY_FUNCATION = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
-        getinputStream();
+        recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
 
-        try {
-            getjsondata();
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        if (savedInstanceState == null){
+            RecipeAsyncTask recipeAsyncTask = new RecipeAsyncTask();
+            recipeAsyncTask.execute();
+        }else {
+            JSON = savedInstanceState.getString("JSON");
+
+                try {
+                    arraylist = getjsondata(JSON);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            UpdateUI(arraylist);
         }
 
         intent = new Intent(MainActivity.this,MainActivity2.class);
     }
 
-    private void getinputStream(){
-        inputStream = getResources().openRawResource(R.raw.bakingappjson);
-        try {
-            JSON = readFromStream(inputStream);
+    public class RecipeAsyncTask extends AsyncTask<URL,Void,ArrayList<GridData>>{
+
+        @Override
+        protected ArrayList<GridData> doInBackground(URL... params) {
+            Log.e("doInBackground","doInBackground");
+
+            URL url = null;
+
+            try {
+                url = new URL(DISCOVERY_FUNCATION);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            JSON = null;
+
+            try {
+                JSON = httprequest(url);
+
+                Log.v("PROBLEM",JSON);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ArrayList<GridData> DataArray=null;
+
+            try {
+                DataArray = getjsondata(JSON);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return DataArray;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<GridData> gridDatas) {
+            if (gridDatas == null){
+                return;
+            }
+            UpdateUI(gridDatas);
+        }
+    }
+
+    private String httprequest(URL url) throws IOException {
+
+        String jsonResponce = "";
+
+        if(url == null){
+            return null;
+        }
+
+        HttpURLConnection urlConnection = null;
+        InputStream inputStream = null;
+
+        try{
+            urlConnection = (HttpURLConnection)url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setReadTimeout(10000);
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.connect();
+
+            if(urlConnection.getResponseCode()==200){
+                inputStream = urlConnection.getInputStream();
+
+                jsonResponce = readFromStream(inputStream);
+            }
+        } catch (ProtocolException e1) {
+            e1.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+
+            if ( urlConnection != null){
+                urlConnection.disconnect();
+            }
+            if(inputStream != null){
+                inputStream.close();
+            }
         }
+        return jsonResponce;
     }
     private String readFromStream(InputStream inputStream) throws IOException {
 
@@ -85,48 +175,49 @@ public class MainActivity extends AppCompatActivity implements Gridadpater.ListI
         }
         return builder.toString();
     }
-    private void getjsondata() throws JSONException {
+
+    private ArrayList<GridData> getjsondata(String JSON) throws JSONException {
 
         int image = 0;
 
         JSONArray jsonarray = new JSONArray(JSON);
 
-            if (jsonarray.length()>0){
+        if (jsonarray.length()>0){
 
-                for(int i=0;jsonarray.length()>i;i++){
+            for(int i=0;jsonarray.length()>i;i++){
 
-                    JSONObject getdata = jsonarray.getJSONObject(i);
+                JSONObject getdata = jsonarray.getJSONObject(i);
 
-                    DishName = getdata.getString("name");
+                DishName = getdata.getString("name");
 
-                    JSONArray getingredients = getdata.getJSONArray("ingredients");
-                    DishTotalingredients = getingredients.length();
+                JSONArray getingredients = getdata.getJSONArray("ingredients");
+                DishTotalingredients = getingredients.length();
 
-                    JSONArray getsteps = getdata.getJSONArray("steps");
-                    Dishsteps = getsteps.length();
+                JSONArray getsteps = getdata.getJSONArray("steps");
+                Dishsteps = getsteps.length();
 
-                    Log.e("getjsondata",DishName+String.valueOf(DishTotalingredients)+String.valueOf(Dishsteps));
+                Log.e("getjsondata",DishName+String.valueOf(DishTotalingredients)+String.valueOf(Dishsteps));
 
-                    if( i == 0){
-                         image = R.drawable.nutellapie;
-                    }if (i == 1){
-                        image = R.drawable.rsz_brownies;
-                    }if (i == 2){
-                        image = R.drawable.rsz_yellowcake;
-                    }if (i == 3){
-                        image = R.drawable.rsz_cheesecake;
-                    }
-
-                    arraylist.add(new GridData(DishName,DishTotalingredients,Dishsteps,image));
+                if( i == 0){
+                    image = R.drawable.nutellapie;
+                }if (i == 1){
+                    image = R.drawable.rsz_brownies;
+                }if (i == 2){
+                    image = R.drawable.rsz_yellowcake;
+                }if (i == 3){
+                    image = R.drawable.rsz_cheesecake;
                 }
+
+                arraylist.add(new GridData(DishName,DishTotalingredients,Dishsteps,image));
             }
+        }
 
+        return arraylist;
 
-        UpdateUI();
+//            UpdateUI();
     }
 
-
-    public void UpdateUI(){
+    public void UpdateUI(ArrayList<GridData> arraylist){
 
         Gridadpater adapter = new Gridadpater(MainActivity.this,arraylist,MainActivity.this);
 
@@ -162,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements Gridadpater.ListI
     public void onListItemClick(int clickedItemIndex) {
 
         intent.putExtra("ID",clickedItemIndex);
+        intent.putExtra("JSON",JSON);
         startActivity(intent);
     }
 
@@ -204,5 +296,11 @@ public class MainActivity extends AppCompatActivity implements Gridadpater.ListI
         double screenInches = Math.sqrt(x+y);
 
         return screenInches;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("JSON",JSON);
     }
 }
